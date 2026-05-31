@@ -1,0 +1,80 @@
+# Health CI — portable template (agent-pipeline-kit)
+#
+# Runs the project's full readiness gate ({{HEALTH_CMD}}) on every PR against the
+# base branch. This is the merge backstop, not the inner dev loop.
+#
+# This template carries only two repo-specific bindings: {{BASE_BRANCH}} and
+# {{HEALTH_CMD}}. Everything else (runner, language toolchain, dependency
+# install) is a generic default you fill in for your stack at the marked
+# installer-fill points below. The dependency/setup steps are commented out on
+# purpose — uncomment and adapt the block(s) that match your language(s), then
+# delete the rest.
+#
+# {{HEALTH_CMD}} should itself fan out to typecheck / lint / test / build so this
+# workflow stays the single source of truth for "is this mergeable".
+#
+# NOTE: The metered/external code-review workflow is intentionally NOT carried by
+# this kit. The kit's reviewer is local and pluggable by design.
+
+name: Health
+
+on:
+  pull_request:
+    branches: ["{{BASE_BRANCH}}"]
+    types: [opened, reopened, synchronize, ready_for_review]
+
+concurrency:
+  group: health-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  health:
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # --- Installer-fill point: language toolchain(s) ---------------------
+      # Uncomment + adapt the setup step(s) for your stack, then set the
+      # version to whatever the project pins. Delete the ones you don't use.
+      #
+      # Python:
+      # - uses: actions/setup-python@v5
+      #   with:
+      #     python-version: "<version>"   # e.g. "3.13"
+      #     cache: pip
+      #
+      # Node / TypeScript:
+      # - uses: actions/setup-node@v4
+      #   with:
+      #     node-version: "<version>"     # e.g. "24"
+      #     cache: npm
+      #
+      # Go:
+      # - uses: actions/setup-go@v5
+      #   with:
+      #     go-version: "<version>"
+      #
+      # Rust:
+      # - uses: dtolnay/rust-toolchain@stable
+      # ---------------------------------------------------------------------
+
+      # --- Installer-fill point: install dependencies ----------------------
+      # Uncomment + adapt the install command(s) for your package manager(s).
+      # Examples:
+      #   pip:    python -m pip install --upgrade pip && pip install -r requirements.txt
+      #   poetry: pipx install poetry && poetry install --no-root
+      #   npm:    npm ci            # add `working-directory: <dir>` for a subdir frontend
+      #   go:     go mod download
+      #   cargo:  cargo fetch
+      #
+      # - name: Install dependencies
+      #   run: <install command for your stack>
+      # ---------------------------------------------------------------------
+
+      - name: Run full health
+        run: {{HEALTH_CMD}}

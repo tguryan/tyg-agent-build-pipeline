@@ -1,0 +1,76 @@
+# Agent Build Pipeline — repo configuration
+#
+# The meta-installer (.pipeline-kit/INSTALL.md) fills this in by inspecting the
+# target repo, then renders the skill templates against it. Every {{TOKEN}} in
+# templates/ resolves from a value here. Re-run the installer any time this
+# changes to re-render.
+#
+# Fill rule: prefer DETECTED values (read the repo); only guess when nothing in
+# the repo settles it, and flag guesses to the user at the approval gate.
+
+# ---- Identity -------------------------------------------------------------
+project:
+  name: ""              # {{PROJECT_NAME}}  e.g. "LifeOS"
+  slug: ""              # {{PROJECT_SLUG}}  lowercase, for agent/file naming, e.g. "lifeos"
+  repo: ""              # {{REPO}}          GitHub "owner/name" (from `git remote`), or "" if none
+  one_liner: ""         # {{PROJECT_ONELINER}}  one sentence describing the project (from README/CLAUDE.md)
+
+# ---- Stack (shapes review conventions + what /build mirrors) ---------------
+stack:
+  summary: ""           # {{STACK_SUMMARY}}  e.g. "FastAPI + raw sqlite3; React 19 + TS; plain CSS"
+  languages: []         # {{STACK_LANGUAGES}}  e.g. ["python", "typescript"]
+  constraints: []       # {{STACK_CONSTRAINTS}}  hard "never do X" rules, e.g. ["No ORM", "No Tailwind"]
+  data_conventions: ""  # {{DATA_CONVENTIONS}}  repo-specific data/code rules /spec + /harden cite
+                        #   (e.g. "IDs via new_id(); soft-delete via archived_at; get_db() context mgr").
+                        #   Multi-line block; render as-is. Leave "" to omit the block entirely.
+
+# ---- Context architecture (where docs live; the pipeline reads/writes these)
+# Detect by scanning for an existing context/ docs tree. If absent, the installer
+# proposes a default and asks before creating it.
+context:
+  root: "context"                       # {{CONTEXT_ROOT}}
+  product_brief: ""                     # {{PRODUCT_BRIEF}}  e.g. "context/product/productbrief.md"
+  design_brief: ""                      # {{DESIGN_BRIEF}}   "" if no UI
+  arch_dir: ""                          # {{ARCH_DIR}}       e.g. "context/dev/arch"
+  features_dir: ""                      # {{FEATURES_DIR}}   living per-feature docs, agent-maintained
+  specs_draft: ""                       # {{SPECS_DRAFT}}    e.g. "context/dev/specs/draft"
+  specs_shipped: ""                     # {{SPECS_SHIPPED}}  e.g. "context/dev/specs/shipped"
+  specs_reviews: ""                     # {{SPECS_REVIEWS}}  e.g. "context/dev/specs/reviews"
+  research_dir: ""                      # {{RESEARCH_DIR}}   e.g. "context/research"
+
+# ---- Verification (the checks /build runs; the heart of build quality) -----
+# Detect from package.json scripts, Makefile, pyproject, existing CI, etc.
+verify:
+  full_health_cmd: ""    # {{HEALTH_CMD}}   one command that runs everything, e.g. "bash scripts/health.sh"
+  typecheck_cmd: ""      # {{TYPECHECK_CMD}}  e.g. "cd frontend && npx tsc --noEmit" ("" if n/a)
+  lint_cmd: ""           # {{LINT_CMD}}     e.g. "ruff check . && cd frontend && npx eslint ."
+  test_cmd: ""           # {{TEST_CMD}}     e.g. "python3 -m pytest tests/"
+  # Targeted profiles: surface -> smallest check that catches its likely failure.
+  # The installer derives these from the repo's layout; /build's Phase 3 uses them.
+  targeted_profiles: []  # {{TARGETED_PROFILES}}  list of {surface, command}
+
+# ---- Git / PR -------------------------------------------------------------
+git:
+  base_branch: "main"    # {{BASE_BRANCH}}  the trunk PRs target (detect default branch)
+  use_worktrees: true    # {{USE_WORKTREES}}  isolate feature work in git worktrees
+  pr_via_gh: true        # {{PR_VIA_GH}}    is the `gh` CLI available + authed?
+
+# ---- Reviewer (pluggable; installer picks the best available adapter) ------
+# adapter ∈ codex-local | codex-headless | claude-code-review | manual-stub
+# See .pipeline-kit/reviewer-adapters/ for what each requires + does.
+review:
+  adapter: ""            # {{REVIEW_ADAPTER}}  chosen by detection at install
+  severity_tiers: []     # {{SEVERITY_TIERS}}  P0/P1/P2 definitions, seeded from stack.constraints
+  notify: "none"         # {{REVIEW_NOTIFY}}  terminal-notifier | push | osascript | none
+  rounds_cap: 3          # {{ROUNDS_CAP}}
+
+# ---- Skill set (which skills to install; trim per repo) --------------------
+skills:
+  enabled: [lifepm, spec, build, librarian, craft]   # {{SKILLS_ENABLED}}
+  optional_available: [harden, codexreview]          # add to enabled if wanted
+
+# ---- Mirror / contract (cross-tool portability; optional) -----------------
+wiring:
+  agents_mirror: false   # {{AGENTS_MIRROR}}  also mirror skills to .agents/skills/ (Codex/Cursor/etc.)
+  mirror_cmd: "bash scripts/sync-agent-skills.sh"  # {{MIRROR_CMD}}  regenerates the .agents mirror (only used when agents_mirror: true)
+  contract_validator: true   # {{CONTRACT_VALIDATOR}}  install validate_agent_pipeline.py + wire into health
