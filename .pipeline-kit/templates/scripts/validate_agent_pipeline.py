@@ -84,7 +84,7 @@ def enabled_skills() -> tuple[list[str], str | None]:
             continue
 
         value = value.strip()
-        # Inline form: enabled: [lifepm, spec, build]   # optional trailing comment
+        # Inline form: enabled: [pm, spec, build]   # optional trailing comment
         if value.startswith("["):
             # slice between the first '[' and the LAST ']' so a trailing
             # `# {{TOKEN}}` annotation after the bracket can't corrupt the final item
@@ -93,7 +93,7 @@ def enabled_skills() -> tuple[list[str], str | None]:
             items = [item.strip().strip("'\"") for item in inner.split(",")]
             return [item for item in items if item], None
 
-        # Block form: enabled:\n  - lifepm\n  - spec
+        # Block form: enabled:\n  - pm\n  - spec
         items = []
         for follow in lines[idx + 1 :]:
             fstripped = follow.strip()

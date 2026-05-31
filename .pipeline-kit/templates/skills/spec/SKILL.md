@@ -4,7 +4,7 @@ slug: spec
 description: >
   Write a feature spec for {{PROJECT_NAME}} — problem, requirements, acceptance
   criteria, and a thin approach. Use when planning a new feature, designing a
-  system change, turning a /lifepm conversation into a buildable doc, or
+  system change, turning a /pm conversation into a buildable doc, or
   remediating a /harden audit. Produces a draft, then runs an inline blind-review
   pass before handing off to /build. Replaces the old standalone /review and
   /align steps.
@@ -293,5 +293,5 @@ When the spec is complete and the inline review pass is reconciled, tell the use
 
 Do NOT auto-invoke `/build` — the user starts the build when ready (possibly in a
 different session or on a different machine). The pipeline is now:
-`/lifepm` → `/spec` (with inline review) → `/build` (with inline diff review) →
+`/pm` → `/spec` (with inline review) → `/build` (with inline diff review) →
 `/librarian`.

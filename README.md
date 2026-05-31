@@ -15,14 +15,14 @@ architecture.
    skill templates against your stack/paths/tooling, wires it up, shows you the plan
    at an approval gate, and verifies the install.
 
-When it's done you have `/lifepm`, `/spec`, `/build`, `/librarian`, `/craft`
+When it's done you have `/pm`, `/spec`, `/build`, `/librarian`, `/craft`
 (+ optional `/harden`, `/codexreview`) tuned to this repo.
 
 ## What you get
 
 | Skill | Role |
 |---|---|
-| `/lifepm` | Product sparring before a spec — JTBD, steel-man, red-team |
+| `/pm` | Product sparring before a spec — JTBD, steel-man, red-team |
 | `/spec` | Feature spec (what/why + acceptance criteria) with an inline blind-review pass |
 | `/build` | Live-codebase analysis → plan → test-first build → independent diff review → clean PR |
 | `/librarian` | Post-ship doc pass (move spec, update living docs) |

@@ -66,7 +66,7 @@ review:
 
 # ---- Skill set (which skills to install; trim per repo) --------------------
 skills:
-  enabled: [lifepm, spec, build, librarian, craft]   # {{SKILLS_ENABLED}}
+  enabled: [pm, spec, build, librarian, craft]   # {{SKILLS_ENABLED}}
   optional_available: [harden, codexreview]          # add to enabled if wanted
 
 # ---- Mirror / contract (cross-tool portability; optional) -----------------

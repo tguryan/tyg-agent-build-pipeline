@@ -12,7 +12,7 @@ everything up, and verify. When you're done, the repo has a working `/spec`,
 
 An idea becomes shipped code through five skills:
 
-- **`/lifepm`** — product sparring (JTDB, steel-man + red-team) before any spec.
+- **`/pm`** — product sparring (JTDB, steel-man + red-team) before any spec.
 - **`/spec`** — writes a feature spec (problem, requirements, acceptance criteria,
   thin approach) and runs an **inline blind-review pass** on its own draft.
 - **`/build`** — analyzes the live codebase, derives a plan, executes test-first via
@@ -156,7 +156,7 @@ Prove it works, with output shown — don't assert:
   test of the most-used skill).
 
 Report what's live, the reviewer adapter chosen, and the first thing to try
-(usually: "run `/lifepm` on an idea, or `/spec` directly").
+(usually: "run `/pm` on an idea, or `/spec` directly").
 
 ## Boundaries
 

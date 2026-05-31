@@ -13,14 +13,14 @@ The description should fire on these (Claude under-triggers — lean toward firi
 **Should fire**
 - "write a spec for a recurring-tasks feature"
 - "let's spec out calendar conflict detection"
-- "turn this lifepm conversation into a spec"
+- "turn this pm conversation into a spec"
 - "I need a feature spec for archiving projects"
 - "design the weekly-review flow as a spec"
 - "remediate the harden findings into a spec"
 
 **Should NOT fire**
 - "build the recurring-tasks feature" (→ /build)
-- "is this feature idea any good?" (→ /lifepm)
+- "is this feature idea any good?" (→ /pm)
 - "fix the failing calendar test" (→ just fix it)
 - "audit the codebase for quality issues" (→ /harden)
 

@@ -17,7 +17,7 @@ actually mutate the repo should run in a throwaway worktree.
 - "write a spec for recurring tasks" (→ /spec)
 - "is this codebase healthy?" (→ /harden)
 - "update the docs after the merge" (→ /librarian)
-- "what should we build next?" (→ /lifepm)
+- "what should we build next?" (→ /pm)
 
 ## Scenario 1: analysis before code
 

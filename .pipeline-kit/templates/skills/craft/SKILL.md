@@ -110,7 +110,7 @@ It's the only thing Claude sees at startup when deciding whether to load the ski
 Structure: **[what it does] + [when to use it] + [trigger phrases]**, third person.
 
 - **Good:** "Write a feature spec for {{PROJECT_NAME}}. Use when planning a new feature,
-  designing a system change, or turning a /lifepm conversation into a spec."
+  designing a system change, or turning a /pm conversation into a spec."
 - **Bad:** "Help with specs." (no artifact, no triggers, no context)
 
 Rules:
