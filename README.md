@@ -4,16 +4,32 @@ A portable **PM → Spec → Build → Review → Librarian** development pipeli
 Claude Code, packaged to drop into any repo with a solid `context/` docs
 architecture.
 
-## Install (the "drop a zip, tell Claude to look" flow)
+## Install
 
-1. Unzip this kit at your repo root (it creates a `.pipeline-kit/` directory).
-2. Tell Claude:
+Get the kit into the target repo (any one of these), then tell Claude to install it.
 
-   > Read `.pipeline-kit/INSTALL.md` and install the pipeline into this repo.
+**Easiest — one-liner, run from the target repo root.** The zip contains only
+`.pipeline-kit/`, so it never touches your repo's own files:
 
-3. Claude inspects the repo, fills `.pipeline-kit/pipeline.config.yml`, renders the
-   skill templates against your stack/paths/tooling, wires it up, shows you the plan
-   at an approval gate, and verifies the install.
+```bash
+curl -sL https://github.com/tguryan/tyg-agent-build-pipeline/raw/main/agent-build-pipeline-kit.zip -o /tmp/abpk.zip && unzip -oq /tmp/abpk.zip -d . && rm /tmp/abpk.zip
+```
+
+**Or clone + copy the kit directory:**
+
+```bash
+gh repo clone tguryan/tyg-agent-build-pipeline /tmp/abpk && cp -R /tmp/abpk/.pipeline-kit .
+```
+
+**Or** download the zip from the repo page and unzip it at your repo root.
+
+Then, in Claude Code opened on that repo:
+
+> Read `.pipeline-kit/INSTALL.md` and install the pipeline into this repo.
+
+Claude inspects the repo, fills `.pipeline-kit/pipeline.config.yml`, renders the
+skill templates against your stack/paths/tooling, wires it up, shows you the plan
+at an approval gate, and verifies the install.
 
 When it's done you have `/pm`, `/spec`, `/build`, `/librarian`, `/craft`
 (+ optional `/harden`, `/codexreview`) tuned to this repo.
